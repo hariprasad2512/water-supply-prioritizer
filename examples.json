@@ -1,0 +1,77 @@
+{
+  "groups": [
+    {
+      "name": "Water supply issues",
+      "note": "Resident and maintenance reports about water supply. Questions are shared by every item; expected answers are hand-set by the author and are policy, not fact - edit them before trusting the score.",
+      "questions": {
+        "is_urgent": {
+          "type": "noul",
+          "instructions": "Does this need action today rather than routine maintenance?",
+          "criteria": {
+            "true": "Same-day: water unusable, unsafe, or a health risk",
+            "false": "Usable service; can wait for routine maintenance"
+          }
+        },
+        "affected_scope": {
+          "type": "choice",
+          "instructions": "How far does the problem reach?",
+          "criteria": {
+            "single_apartment": "One flat, neighbours unaffected",
+            "single_block": "One building or block",
+            "multiple_blocks": "Several buildings",
+            "complex_wide": "Whole estate or network zone",
+            "unknown": "Not stated in the report"
+          }
+        },
+        "likely_cause": {
+          "type": "choice",
+          "instructions": "Most likely cause of the affected water?",
+          "criteria": {
+            "sediment_disturbance": "Sediment from works or a pressure change",
+            "corrosion": "Rust from old pipework in the building",
+            "hydrant_or_main_work": "Utility flushing or main repair nearby",
+            "contamination": "Sewage or chemical contamination, do not drink",
+            "unknown": "Not enough information to tell"
+          }
+        },
+        "priority": {
+          "type": "score",
+          "instructions": "What priority should this report get?",
+          "criteria": [
+            "Routine, within a week",
+            "Soon, within 48 hours",
+            "Urgent, same day",
+            "Emergency, immediate dispatch"
+          ]
+        },
+        "escalate_to": {
+          "type": "choice",
+          "instructions": "Who should take the next step first?",
+          "criteria": {
+            "onsite_plumber": "Building's plumber checks internal pipework",
+            "building_maintenance": "Estate or building maintenance team",
+            "municipal_utility": "Utility checks the main and network",
+            "water_quality_lab": "Lab sampling to confirm the water is safe"
+          }
+        }
+      },
+      "gates": {
+        "is_urgent": { "threshold": 0.7, "pass": "Dispatch today", "fail": "Queue" },
+        "priority": { "threshold": 0.8, "pass": "Stand behind the priority", "fail": "Human review" }
+      },
+      "items": [
+        {
+          "name": "Brown water, single apartment",
+          "state": "TICKET #WS-4471, Apartment 3B, Block C\nReported: brown water from the cold tap since yesterday morning.\nReporter: tenant. No other symptoms reported.\nScope checked by the caller: neighbouring blocks are unaffected; no word yet about other flats in Block C.\nNo water work, flushing or hydrant activity known to the tenant.\n\nRequested action: advise whether this is safe to drink and when someone can look at it.",
+          "expected": {
+            "is_urgent": "yes",
+            "affected_scope": "single_apartment",
+            "likely_cause": "corrosion",
+            "priority": 2,
+            "escalate_to": "onsite_plumber"
+          }
+        }
+      ]
+    }
+  ]
+}
